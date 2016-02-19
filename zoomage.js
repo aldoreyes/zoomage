@@ -279,18 +279,17 @@
       _model = zoomageGlobal();
     }
 
-    if (this.length){
-      // merge arrays
-      for (var i = 0; i < this.length; i++) {
-        _model.add(this[i], userOpts);
+    if ( this.hasOwnProperty('length') ){
+      if(this.length > 0){
+        // merge arrays
+        for (var i = 0; i < this.length; i++) {
+          _model.add(this[i], userOpts);
+        }
       }
     } else if (typeof this === "object"){
       _model.add(this, userOpts);
     }
-
-
-
-  }
+  };
 
 
   if($.fn.zoomage === undefined){
