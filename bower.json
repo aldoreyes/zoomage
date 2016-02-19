@@ -1,11 +1,14 @@
 {
   "name": "zoomage",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Aldo Reyes <aldo.reyes18@gmail.com>"
   ],
   "description": "Zoom through images as the user scrolls. http://aldoreyes.github.io/zoomage",
-  "main": "zoomage.js",
+  "main": [
+    "zoomage.js",
+    "zoomage.css"
+  ],
   "moduleType": [
     "amd",
     "globals"

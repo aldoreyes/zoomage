@@ -1,9 +1,72 @@
 (function ($){
   var _model;
 
-  var toType = function(obj) {
-    return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+  /**
+   * Debounce function from underscore.js
+   * https://github.com/jashkenas/underscore/blob/master/underscore.js
+   */
+
+  // Similar to ES6's rest param (http://ariya.ofilabs.com/2013/03/es6-and-rest-parameter.html)
+  // This accumulates the arguments passed into an array, after a given index.
+  function restArgs(func, startIndex) {
+    startIndex = startIndex == null ? func.length - 1 : +startIndex;
+    return function() {
+      var length = Math.max(arguments.length - startIndex, 0);
+      var rest = Array(length);
+      for (var index = 0; index < length; index++) {
+        rest[index] = arguments[index + startIndex];
+      }
+      switch (startIndex) {
+        case 0: return func.call(this, rest);
+        case 1: return func.call(this, arguments[0], rest);
+        case 2: return func.call(this, arguments[0], arguments[1], rest);
+      }
+      var args = Array(startIndex + 1);
+      for (index = 0; index < startIndex; index++) {
+        args[index] = arguments[index];
+      }
+      args[startIndex] = rest;
+      return func.apply(this, args);
+    };
   }
+
+  function debounce(func, wait, immediate) {
+    var timeout, result;
+
+    var later = function(context, args) {
+      timeout = null;
+      if (args) result = func.apply(context, args);
+    };
+
+    var debounced = restArgs(function(args) {
+      var callNow = immediate && !timeout;
+      if (timeout) clearTimeout(timeout);
+      if (callNow) {
+        timeout = setTimeout(later, wait);
+        result = func.apply(this, args);
+      } else if (!immediate) {
+
+        timeout = setTimeout(function() {
+          return func.apply(null, this);
+        }, wait);
+      }
+
+      return result;
+    });
+
+    debounced.cancel = function() {
+      clearTimeout(timeout);
+      timeout = null;
+    };
+
+    return debounced;
+  }
+  delay = restArgs(function(func, wait, args) {
+    return setTimeout(function() {
+      return func.apply(null, args);
+    }, wait);
+  });
+  //END DEBOUNCE dependencies
 
   function loadImage(url){
     var deferred = Q.defer();
@@ -18,7 +81,8 @@
   }
 
   function zoomageGlobal(){
-    var _instances = [];
+    var _instances = [],
+    maxAlpha = 0.5;
 
     function init(instance, opts){
       instance.canvas_container = document.createElement('div');
@@ -32,7 +96,7 @@
 
       var promises = [];
       instance.sections.forEach(function(item, index){
-        promises.push(loadImage($(item.el).data('zoomage-img')))
+        promises.push(loadImage($(item.el).data('zoomage-img')));
       });
 
 
@@ -68,7 +132,13 @@
       animate(instance);
     }
 
-
+    function onWindowResize(){
+      console.log('onWindowResize');
+      _instances.forEach(function(item, index){
+        item.canvas.setAttribute('width', item.canvas.clientWidth);
+        item.canvas.setAttribute('height', item.canvas.clientHeight);
+      });
+    }
 
     function scroll(evt){
       _instances.forEach(function(item, index){
@@ -119,12 +189,12 @@
 
     function getZoomLevel(width, height, image, distance){
       var baseScale = ( (width / image.width) > (height / image.height) ? (width / image.width) : (height / image.height) ) * 1.8;
-      baseScale += distance * .3;
+      baseScale += distance * 0.3;
       return baseScale;
     }
 
     function draw(instance){
-      ctx = instance.ctx,
+      var ctx = instance.ctx,
       bg = instance.images[instance.activeSectionInd];
       var distance = instance.sections[instance.activeSectionInd].distance;
       var width = instance.canvas.width,
@@ -150,7 +220,7 @@
         if(instance.activeSectionInd > 0 && distance < 0){
 
           var distancePrev = instance.sections[instance.activeSectionInd -1].distance;
-          var alphaPrev = Math.max(0, 1 - (Math.abs(distancePrev) - .5));
+          var alphaPrev = Math.max(0, 1 - (Math.abs(distancePrev) - maxAlpha));
 
           var prevImage = instance.images[instance.activeSectionInd - 1];
           var baseScalePrev = getZoomLevel(width, height, prevImage, distancePrev);
@@ -165,7 +235,7 @@
           ctx.restore();
         }
 
-        var alpha = 1 - (Math.abs(distance) - .5);
+        var alpha = 1 - (Math.abs(distance) - maxAlpha);
         ctx.save();
         ctx.globalAlpha = alpha;
         ctx.drawImage(bg, cropX, cropY, cropWidth, cropHeight, 0,0, instance.canvas.width, instance.canvas.height );
@@ -173,10 +243,10 @@
         if(instance.activeSectionInd < (instance.sections.length - 1) && distance > 0){
           var distanceNext = instance.sections[instance.activeSectionInd + 1].distance;
 
-          var alphaNext = Math.max(0, 1 - (Math.abs(distanceNext) - .5));
+          var alphaNext = Math.max(0, 1 - (Math.abs(distanceNext) - maxAlpha));
           var nextImage = instance.images[instance.activeSectionInd + 1];
           var baseScaleNext = getZoomLevel(width, height, nextImage, distanceNext);
-          console.log(distanceNext, baseScaleNext);
+          //console.log(distanceNext, baseScaleNext);
           var cropWidthNext = instance.canvas.width / baseScaleNext;
           var cropHeightNext = instance.canvas.height / baseScaleNext;
           cropXNext = (nextImage.width - cropWidthNext) / 2;
@@ -196,6 +266,7 @@
     }
 
     document.addEventListener("scroll", scroll, false);
+    $(window).resize( debounce(onWindowResize, 300) );
 
     return {
       add:add
