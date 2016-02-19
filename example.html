@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html><head>
+
+<title>Scroll Zoom</title>
+
+<link rel="stylesheet" type="text/css" href="./zoomage.css" />
+
+</head><body>
+  <div class="header-content">
+    <h1>Previous Content</h1>
+  </div>
+  <div class="zoomage-container">
+    <div class="zoomage-section" data-zoomage-img="./img/img-1.jpg">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor condimentum nisl, id varius diam aliquam ultrices. Suspendisse commodo nec ligula vel mattis. Mauris tincidunt, nibh ac rutrum volutpat, purus ex tristique massa, ac vulputate velit risus at neque. Vestibulum finibus tortor ac sagittis convallis. Curabitur in magna mauris. Vivamus laoreet ullamcorper metus ut pulvinar. Nam pulvinar eu urna sed aliquam. Nunc pulvinar erat eget tristique ullamcorper. Nulla sed nulla vitae erat auctor interdum nec in risus. Aliquam ut fringilla sem, vel euismod elit. Vivamus pellentesque at neque at elementum.</p>
+    </div>
+    <div class="zoomage-section" data-zoomage-img="./img/img-2.jpg">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor condimentum nisl, id varius diam aliquam ultrices. Suspendisse commodo nec ligula vel mattis. Mauris tincidunt, nibh ac rutrum volutpat, purus ex tristique massa, ac vulputate velit risus at neque. Vestibulum finibus tortor ac sagittis convallis. Curabitur in magna mauris. Vivamus laoreet ullamcorper metus ut pulvinar. Nam pulvinar eu urna sed aliquam. Nunc pulvinar erat eget tristique ullamcorper. Nulla sed nulla vitae erat auctor interdum nec in risus. Aliquam ut fringilla sem, vel euismod elit. Vivamus pellentesque at neque at elementum.</p>
+    </div>
+    <div class="zoomage-section" data-zoomage-img="./img/img-3.jpg">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam porttitor condimentum nisl, id varius diam aliquam ultrices. Suspendisse commodo nec ligula vel mattis. Mauris tincidunt, nibh ac rutrum volutpat, purus ex tristique massa, ac vulputate velit risus at neque. Vestibulum finibus tortor ac sagittis convallis. Curabitur in magna mauris. Vivamus laoreet ullamcorper metus ut pulvinar. Nam pulvinar eu urna sed aliquam. Nunc pulvinar erat eget tristique ullamcorper. Nulla sed nulla vitae erat auctor interdum nec in risus. Aliquam ut fringilla sem, vel euismod elit. Vivamus pellentesque at neque at elementum.</p>
+    </div>
+  </div>
+
+  <div class="footer-content">
+    <h1>After Content</h1>
+  </div>
+
+  <script type="text/javascript" src="./bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="./bower_components/q/q.js"></script>
+  <script type="text/javascript" src="./zoomage.js"></script>
+  <script type="text/javascript">
+    $( document ).ready(function() {
+      $('.zoomage-container').zoomage({});
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "name": "zoomage",
+  "version": "0.0.0",
+  "authors": [
+    "Aldo Reyes <aldo.reyes18@gmail.com>"
+  ],
+  "description": "Zoom through images as the user scrolls",
+  "main": "zoomage.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "image",
+    "zoom",
+    "canvas",
+    "2d"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "q": "1.0.1",
+    "jquery": "~2.1.4"
+  }
+}
