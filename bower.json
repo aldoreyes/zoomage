@@ -4,7 +4,7 @@
   "authors": [
     "Aldo Reyes <aldo.reyes18@gmail.com>"
   ],
-  "description": "Zoom through images as the user scrolls",
+  "description": "Zoom through images as the user scrolls. http://aldoreyes.github.io/zoomage",
   "main": "zoomage.js",
   "moduleType": [
     "amd",
