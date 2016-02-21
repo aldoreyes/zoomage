@@ -336,9 +336,15 @@ footer p{
 
 
 .zoomage-content{
-  margin-left: 40%;
+
   background-color:#fff;
   padding: 20px;
+}
+
+@media print, screen and (min-width: 481px) {
+  .zoomage-content{
+    margin-left: 40%;
+  }
 }
 
 .zoomage-content code{
