@@ -162,6 +162,8 @@ header {
   padding-top: 50px;
   width:270px;
   float:left;
+  position: relative;
+  z-index: 100;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
