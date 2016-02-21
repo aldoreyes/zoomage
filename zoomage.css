@@ -5,6 +5,7 @@ html, body{
 
 .zoomage-container{
   position: relative;
+  z-index: -1;
 }
 
 .zoomage-section{
