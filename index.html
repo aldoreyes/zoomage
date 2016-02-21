@@ -7,6 +7,8 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
+    <link rel="stylesheet" href="stylesheets/prism.css">
+    <link rel="stylesheet" type="text/css" href="stylesheets/zoomage.css" />
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -31,17 +33,114 @@
         <h2>
 <a id="zoomage" class="anchor" href="#zoomage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Zoomage</h2>
 
-<p>Canvas based scroll effect to zoom in/out images as you scroll down.</p>
+<p>Canvas based scroll effect to zoom in/out images as you scroll down. Each section has an image, and it may or not contain nested html content.</p>
 
 <h3>
 <a id="work-in-progress" class="anchor" href="#work-in-progress" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>WORK IN PROGRESS</h3>
       </section>
+
+</div>
+      <div class="zoomage-container">
+        <div class="zoomage-section" data-zoomage-img="./img/img-1.jpg">
+          <div class="zoomage-content">
+            <h4>Install via bower</h4>
+            <code>bower install zoomage --save</code>
+          </div>
+        </div>
+        <div class="zoomage-section" data-zoomage-img="./img/img-2.jpg">
+          <div class="zoomage-content">
+          <h4>Or install manually.</h4>
+          <p>Also install the dependencies (<a href="https://jquery.com/" target="_blank">Jquery</a> and <a href="https://github.com/kriskowal/q" target="_blank">q</a>).</p>
+          <pre class="language-markup">
+            <code>
+&lt;head&gt;
+  &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;zoomage.css&quot; /&gt;
+...
+&lt;/head&gt;
+&lt;body&gt;
+  ...
+  &lt;script type=&quot;text/javascript&quot; src=&quot;jquery.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script type=&quot;text/javascript&quot; src=&quot;q.js&quot;&gt;&lt;/script&gt;
+  &lt;script type=&quot;text/javascript&quot; src=&quot;zoomage.js&quot;&gt;&lt;/script&gt;
+&lt;/body&gt;
+            </code>
+          </pre>
+        </div>
+        </div>
+        <div class="zoomage-section" data-zoomage-img="./img/img-3.jpg">
+          <div class="zoomage-content">
+          <H4>Prepare the markup</H4>
+          <pre class="language-markup">
+            <code>
+&lt;div class=&quot;zoomage-container&quot;&gt;
+  &lt;div class=&quot;zoomage-section&quot; data-zoomage-img=&quot;./img/img-1.jpg&quot;&gt;
+    &lt;p&gt;Content for section 1...&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;zoomage-section&quot; data-zoomage-img=&quot;./img/img-2.jpg&quot;&gt;
+    &lt;p&gt;Content for section 2...&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;zoomage-section&quot; data-zoomage-img=&quot;./img/img-3.jpg&quot;&gt;
+    &lt;p&gt;Content for section 3...&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+            </code>
+          </pre>
+        </div>
+        </div>
+
+        <div class="zoomage-section" data-zoomage-img="./img/img-4.jpg">
+          <div class="zoomage-content">
+            <h4>Initialize zoomage, voila!</h4>
+            <pre class="language-markup">
+              <code class="language-javascript">
+                $( document ).ready(function() {
+                  $('.zoomage-container').zoomage({});
+                });
+              </code>
+            </pre>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="wrapper">
+      <div id="disqus_thread"></div>
+      <script>
+      /**
+      * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+      * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+      */
+      /*
+      var disqus_config = function () {
+      this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+      this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      */
+      (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+
+      s.src = '//zoomage.disqus.com/embed.js';
+
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
       <footer>
         <p>This project is maintained by <a href="https://github.com/aldoreyes">aldoreyes</a></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-    
+    <script type="text/javascript" src="javascripts/prism.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/q.js"></script>
+    <script type="text/javascript" src="javascripts/zoomage.js"></script>
+    <script type="text/javascript">
+      $( document ).ready(function() {
+        $('.zoomage-container').zoomage({});
+      });
+    </script>
   </body>
 </html>

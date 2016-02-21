@@ -56,7 +56,8 @@
 
 body {
   background-color: #fff;
-  padding:50px;
+  padding-bottom: 50px;
+  margin: 0;
   font: 14px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#727272;
   font-weight:400;
@@ -158,9 +159,9 @@ img {
 }
 
 header {
+  padding-top: 50px;
   width:270px;
   float:left;
-  position:fixed;
   -webkit-font-smoothing:subpixel-antialiased;
 }
 
@@ -224,6 +225,7 @@ header ul a strong {
 }
 
 section {
+  padding-top: 50px;
   width:500px;
   float:right;
   padding-bottom:50px;
@@ -241,11 +243,13 @@ hr {
 }
 
 footer {
-  width:270px;
   float:left;
-  position:fixed;
-  bottom:50px;
   -webkit-font-smoothing:subpixel-antialiased;
+}
+
+footer p{
+  margin-bottom: 0;
+  padding-top: 0;
 }
 
 @media print, screen and (max-width: 960px) {
@@ -302,12 +306,13 @@ footer {
 }
 
 @media print, screen and (max-width: 480px) {
-  body {
-    padding:15px;
-  }
 
   header ul {
     width:99%;
+  }
+
+  .wrapper{
+    padding: 15px;
   }
 
   header li, header ul li + li + li {
@@ -321,4 +326,19 @@ footer {
     font-size:12pt;
     color:#444;
   }
+}
+
+#disqus_thread{
+  padding-top: 50px;
+}
+
+
+.zoomage-content{
+  margin-left: 40%;
+  background-color:#fff;
+  padding: 20px;
+}
+
+.zoomage-content code{
+  margin-bottom: 20px;
 }
