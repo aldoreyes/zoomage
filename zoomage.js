@@ -117,11 +117,17 @@
         });
       });
 
+      var _opts = {
+        mainScale: 1.8,
+        variation: 0.3
+      };
+
       var instance = {
         el:target,
         sections: sections,
         activeSectionInd: 0,
-        images: []
+        images: [],
+        opts: $.extend(_opts, opts)
       };
 
       _instances.push(instance);
@@ -133,7 +139,6 @@
     }
 
     function onWindowResize(){
-      console.log('onWindowResize');
       _instances.forEach(function(item, index){
         item.canvas.setAttribute('width', item.canvas.clientWidth);
         item.canvas.setAttribute('height', item.canvas.clientHeight);
@@ -187,9 +192,9 @@
       requestAnimationFrame(loop);
     }
 
-    function getZoomLevel(width, height, image, distance){
-      var baseScale = ( (width / image.width) > (height / image.height) ? (width / image.width) : (height / image.height) ) * 1.8;
-      baseScale += distance * 0.3;
+    function getZoomLevel(width, height, image, distance, opts){
+      var baseScale = ( (width / image.width) > (height / image.height) ? (width / image.width) : (height / image.height) ) * opts.mainScale;
+      baseScale += distance * opts.variation;
       return baseScale;
     }
 
@@ -199,7 +204,7 @@
       var distance = instance.sections[instance.activeSectionInd].distance;
       var width = instance.canvas.width,
         height = instance.canvas.height;
-      var baseScale = getZoomLevel(width, height, bg, distance);
+      var baseScale = getZoomLevel(width, height, bg, distance, instance.opts);
 
       var cropWidth = instance.canvas.width / baseScale;
       var cropHeight = instance.canvas.height / baseScale;
@@ -223,7 +228,7 @@
           var alphaPrev = Math.max(0, 1 - (Math.abs(distancePrev) - maxAlpha));
 
           var prevImage = instance.images[instance.activeSectionInd - 1];
-          var baseScalePrev = getZoomLevel(width, height, prevImage, distancePrev);
+          var baseScalePrev = getZoomLevel(width, height, prevImage, distancePrev, instance.opts);
           var cropWidthPrev = instance.canvas.width / baseScalePrev;
           var cropHeightPrev = instance.canvas.height / baseScalePrev;
           cropXPrev = (prevImage.width - cropWidthPrev) / 2;
@@ -245,7 +250,7 @@
 
           var alphaNext = Math.max(0, 1 - (Math.abs(distanceNext) - maxAlpha));
           var nextImage = instance.images[instance.activeSectionInd + 1];
-          var baseScaleNext = getZoomLevel(width, height, nextImage, distanceNext);
+          var baseScaleNext = getZoomLevel(width, height, nextImage, distanceNext, instance.opts);
           //console.log(distanceNext, baseScaleNext);
           var cropWidthNext = instance.canvas.width / baseScaleNext;
           var cropHeightNext = instance.canvas.height / baseScaleNext;
