@@ -127,7 +127,8 @@
         sections: sections,
         activeSectionInd: 0,
         images: [],
-        opts: $.extend(_opts, opts)
+        opts: $.extend(_opts, opts),
+        ready: false
       };
 
       _instances.push(instance);
@@ -135,7 +136,10 @@
     }
 
     function ready(instance){
-      animate(instance);
+      instance.ready = true;
+      instance.canvas.setAttribute('width', instance.canvas.clientWidth);
+      instance.canvas.setAttribute('height', instance.canvas.clientHeight);
+      scroll();
     }
 
     function onWindowResize(){
@@ -143,53 +147,59 @@
         item.canvas.setAttribute('width', item.canvas.clientWidth);
         item.canvas.setAttribute('height', item.canvas.clientHeight);
       });
+
+      scroll();
     }
 
     function scroll(evt){
+
       _instances.forEach(function(item, index){
-        var rect = item.el.getBoundingClientRect();
-        var topDistance    = rect.top,
-            bottomDistance = item.canvas.height - rect.bottom;
-        if (topDistance >= 0 && bottomDistance <= 0) {
-          item.canvas_container.classList.remove('zoomage-fixed');
-          item.canvas_container.classList.remove('zoomage-bottom');
-          item.active = false;
-        }else if(bottomDistance > 0){
-          item.canvas_container.classList.remove('zoomage-fixed');
-          item.canvas_container.classList.add('zoomage-bottom');
-          item.active = false;
-        }else{
-          item.active = true;
-          item.canvas_container.classList.add('zoomage-fixed');
-          item.canvas_container.classList.remove('zoomage-bottom');
-          var sectionActiveInd = 0;
-          var sectionMinDistance = Number.MAX_VALUE;
-          item.sections.forEach(function (section, index){
-            var sectionRect = section.el.getBoundingClientRect();
-            var sectionTopDistance = sectionRect.top,
-              sectionMidDistance = (item.canvas.height * 0.5) - (sectionRect.height * 0.5) - sectionRect.top;
+        if(item.ready){
+          var rect = item.el.getBoundingClientRect();
+          var topDistance    = rect.top,
+              bottomDistance = item.canvas.height - rect.bottom;
+          if (topDistance >= 0 && bottomDistance <= 0) {
+            item.canvas_container.classList.remove('zoomage-fixed');
+            item.canvas_container.classList.remove('zoomage-bottom');
+            item.active = false;
+          }else if(bottomDistance > 0){
 
-            section.distance = sectionMidDistance / (sectionRect.height * 0.5); //normalize
+            item.canvas_container.classList.remove('zoomage-fixed');
+            item.canvas_container.classList.add('zoomage-bottom');
+            item.activeSectionInd = item.sections.length-1;
+            item.active = false;
+          }else{
+            item.active = true;
+            item.canvas_container.classList.add('zoomage-fixed');
+            item.canvas_container.classList.remove('zoomage-bottom');
+            var sectionActiveInd = 0;
+            var sectionMinDistance = Number.MAX_VALUE;
+            item.sections.forEach(function (section, index){
+              var sectionRect = section.el.getBoundingClientRect();
+              var sectionTopDistance = sectionRect.top,
+                sectionMidDistance = (item.canvas.height * 0.5) - (sectionRect.height * 0.5) - sectionRect.top;
 
-            if(Math.abs(section.distance) < sectionMinDistance){
-              sectionMinDistance = Math.abs(section.distance);
-              item.activeSectionInd = index;
-            }
+              section.distance = sectionMidDistance / (sectionRect.height * 0.5); //normalize
 
-          });
+              if(Math.abs(section.distance) < sectionMinDistance){
+                sectionMinDistance = Math.abs(section.distance);
+                item.activeSectionInd = index;
+              }
+
+            });
+          }
         }
-
-
       });
+
+      requestAnimationFrame(loop);
     }
 
-    function animate(instance){
-      function loop(){
-          draw(instance);
-          requestAnimationFrame(loop);
-      }
-      scroll();
-      requestAnimationFrame(loop);
+    function loop(){
+        _instances.forEach(function(item, index){
+          if(item.ready){
+            draw(item);
+          }
+        });
     }
 
     function getZoomLevel(width, height, image, distance, opts){
@@ -251,7 +261,6 @@
           var alphaNext = Math.max(0, 1 - (Math.abs(distanceNext) - maxAlpha));
           var nextImage = instance.images[instance.activeSectionInd + 1];
           var baseScaleNext = getZoomLevel(width, height, nextImage, distanceNext, instance.opts);
-          //console.log(distanceNext, baseScaleNext);
           var cropWidthNext = instance.canvas.width / baseScaleNext;
           var cropHeightNext = instance.canvas.height / baseScaleNext;
           cropXNext = (nextImage.width - cropWidthNext) / 2;
